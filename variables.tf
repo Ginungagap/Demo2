@@ -1,7 +1,7 @@
 variable "credentials" {
   description = "CREDENTIALS_JSON_PATH"
   default = "/var/lib/jenkins/credentials/project-for-terraform.json"
-  
+}  
 
 variable "project" {
   description = "Project ID"
