@@ -30,12 +30,12 @@ variable "disk_image" {
 
 variable "public_key_path" {
   description = "Path to the ssh public key"
-  default     = "/var/lib/jenkins/.ssh/jenkins.pub"
+  default     = "/var/lib/jenkins/.ssh/id_rsa.pub"
 }
 
 variable "private_key_path" {
   description = "Path to the ssh private key"
-  default     = "/var/lib/jenkins/.ssh/jenkins"
+  default     = "/var/lib/jenkins/.ssh/id_rsa"
 }
 
 variable "network" {
