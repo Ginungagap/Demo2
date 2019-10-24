@@ -8,7 +8,7 @@ resource "google_compute_instance" "production" {
  name         = "production"
  machine_type = var.machine_type
  zone         = var.zone
- tags         = ["prod-8081", "http-server"]
+ tags         = ["prod-8081-8083", "http-server"]
 
   boot_disk {
     initialize_params {
@@ -52,14 +52,14 @@ resource "google_compute_instance" "mongo-db" {
   }
 }
 
-resource "google_compute_firewall" "prod-8081" {
-  name    = "prod-8081"
+resource "google_compute_firewall" "prod-8081-8083" {
+  name    = "prod-8081-8083"
   network = var.network
 
-  target_tags = ["prod-8081"]
+  target_tags = ["prod-8081-8083"]
 
   allow {
     protocol = "tcp"
-    ports    = ["8081, 8082, 8083"]
+    ports    = ["8081-8083"]
   }
 }
