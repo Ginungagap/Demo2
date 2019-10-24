@@ -32,7 +32,7 @@ resource "google_compute_instance" "mongo-db" {
  name         = "mongo-db"
  machine_type = var.machine_type
  zone         = var.zone
- tags         = ["mongo-db-27017"]
+ tags         = ["http-server"]
 
   boot_disk {
     initialize_params {
@@ -49,5 +49,17 @@ resource "google_compute_instance" "mongo-db" {
     network_ip = var.network_ip
     access_config {
     }
+  }
+}
+
+resource "google_compute_firewall" "prod-8081" {
+  name    = "prod-8081"
+  network = var.network
+
+  target_tags = ["prod-8081"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8081, 8082, 8083"]
   }
 }
