@@ -50,4 +50,12 @@
         owner: jenkins
         group: jenkins
         mode: 0774     
-     
+        
+    - name: Creates directory for docker swarm key
+      file:
+        path: /home/jenkins/docker_credentials/
+        state: directory
+        owner: jenkins
+        group: jenkins
+        mode: 0774     
+        
