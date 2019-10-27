@@ -63,3 +63,36 @@ resource "google_compute_firewall" "prod-8081-8083" {
     ports    = ["8081-8083"]
   }
 }
+
+resource "null_resource" "mongo-db-provisioner" {
+ 
+  connection {
+    type = "ssh"
+    user = "jenkins"
+    host = "${google_compute_instance.mongo-db.network_interface.0.access_config.0.nat_ip}"
+    private_key = "${file(var.private_key_path)}"
+    agent = false   
+  } 
+
+ provisioner "file" {
+    source      = "/var/lib/jenkins/docker_credentials/swarm_key"
+    destination = "~/docker_credentials/swarm_key"
+  }  
+}
+
+
+resource "null_resource" "production-provisioner" {
+ 
+  connection {
+    type = "ssh"
+    user = "jenkins"
+    host = "${google_compute_instance.production.network_interface.0.access_config.0.nat_ip}"
+    private_key = "${file(var.private_key_path)}"
+    agent = false   
+  }
+
+  provisioner "file" {
+    source      = "/var/lib/jenkins/docker_credentials/swarm_key"
+    destination = "~/docker_credentials/swarm_key"
+  }
+}
