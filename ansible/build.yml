@@ -1,0 +1,32 @@
+---
+- name: build
+  gather_facts: No
+  hosts: localhost
+
+  tasks:
+  - name: Clone front-end
+    git:
+      repo: 'https://github.com/Ginungagap/front-end.git'
+      dest: /var/lib/jenkins/repositories/front-end
+#    become: yes
+#    become_user: root
+#    become_method: sudo
+
+  - name: Docker Login
+    docker_login:
+      registry: https://gcr.io
+      username: _json_key
+      debug: true
+      password: " {{ lookup('file', '/var/lib/jenkins/credentials/project-for-terraform.json')}}"
+
+  - name: Build front-end
+    docker_image:
+      name: gcr.io/quantum-tracker-251814/front-end
+      build:
+        path: /var/lib/jenkins/repositories/front-end
+        pull: yes
+      source: build
+#    become: yes
+#    become_user: root
+#    become_method: sudo
+  
