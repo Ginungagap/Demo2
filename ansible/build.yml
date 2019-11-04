@@ -4,14 +4,6 @@
   hosts: localhost
 
   tasks:
-  - name: Clone front-end
-    git:
-      repo: 'https://github.com/Ginungagap/front-end.git'
-      dest: /var/lib/jenkins/repositories/front-end
-#    become: yes
-#    become_user: root
-#    become_method: sudo
-
   - name: Docker Login
     docker_login:
       registry: https://gcr.io
@@ -19,7 +11,15 @@
       debug: true
       password: " {{ lookup('file', '/var/lib/jenkins/credentials/project-for-terraform.json')}}"
 
-  - name: Build front-end
+  - name: Clone front-end
+    git:
+      repo: 'https://github.com/Ginungagap/front-end.git'
+      dest: /var/lib/jenkins/repositories/front-end
+#    become: yes
+#    become_user: root
+#    become_method: sudo
+ 
+  - name: Build and push front-end image
     docker_image:
       build:
         path: /var/lib/jenkins/repositories/front-end
@@ -27,7 +27,8 @@
       push: yes
       pull: yes 
       source: build
-#    become: yes
-#    become_user: root
-#    become_method: sudo
-  
+
+  - name: Remove front-end image
+  docker_image:
+    state: absent
+    name: gcr.io/project-for-terraform/front-end
