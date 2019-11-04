@@ -23,8 +23,9 @@
     docker_image:
       build:
         path: /var/lib/jenkins/repositories/front-end
-      name: gcr.io/quantum-tracker-251814/front-end 
-      push: yes 
+      name: gcr.io/project-for-terraform/front-end 
+      push: yes
+      pull: yes 
       source: build
 #    become: yes
 #    become_user: root
