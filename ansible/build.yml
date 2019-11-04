@@ -21,10 +21,10 @@
 
   - name: Build front-end
     docker_image:
-      name: gcr.io/quantum-tracker-251814/front-end
       build:
         path: /var/lib/jenkins/repositories/front-end
-        pull: yes
+      name: gcr.io/quantum-tracker-251814/front-end 
+      push: yes 
       source: build
 #    become: yes
 #    become_user: root
