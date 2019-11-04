@@ -29,6 +29,6 @@
       source: build
 
   - name: Remove front-end image
-  docker_image:
-    state: absent
-    name: gcr.io/project-for-terraform/front-end
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/front-end
