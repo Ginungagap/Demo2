@@ -1,0 +1,16 @@
+---
+- name: Pull app containers 
+  gather_facts: No
+  hosts: production
+
+  tasks:
+  - name: pull an image
+    docker_image:
+      name: gcr.io/project-for-terraform/front-end:latest
+      source: pull
+
+# - name: Run app containers 
+#   gather_facts: No
+#   hosts: production
+
+#   tasks:
