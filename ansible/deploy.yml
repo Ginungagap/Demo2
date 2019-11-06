@@ -3,12 +3,13 @@
   gather_facts: No
   hosts: production
 
+  tasks:
+
   - name: Connect to overlay network
     docker_network:
       name: microservices-net
       attachable: yes
 
-  tasks:
   - name: Pull front-end image
     docker_image:
       name: gcr.io/project-for-terraform/front-end
