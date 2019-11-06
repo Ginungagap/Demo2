@@ -30,6 +30,11 @@
       package:
         name: docker-ce
         state: latest
+
+    - name:  Install Docker-py
+      pip:
+        name: docker-py
+        state: latest
       
     - name: Start Docker service
       service:
