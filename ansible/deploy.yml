@@ -1,16 +1,18 @@
 ---
-- name: Pull app containers 
+- name: Pull and run app containers 
   gather_facts: No
   hosts: production
 
   tasks:
-  - name: pull an image
+  - name: Pull front-end image
     docker_image:
       name: gcr.io/project-for-terraform/front-end
       source: pull
 
-# - name: Run app containers 
-#   gather_facts: No
-#   hosts: production
-
-#   tasks:
+  - name: Create front-end container
+    docker_container:
+      name: front-end
+      image: gcr.io/project-for-terraform/front-end:latest
+      networks: microservices-net
+      recreate: yes
+      

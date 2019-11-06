@@ -20,13 +20,11 @@
     docker_image:
       build:
         path: /var/lib/jenkins/repositories/front-end
-      name: gcr.io/project-for-terraform/front-end:1.0.1
-      name: gcr.io/project-for-terraform/front-end:latest 
+      name: gcr.io/project-for-terraform/front-end:1.0.0
       push: yes
-      pull: yes 
       source: build
 
-  # - name: Remove front-end image
-  #   docker_image:
-  #     state: absent
-  #     name: gcr.io/project-for-terraform/front-end
+  - name: Remove front-end image
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/front-end:1.0.0
