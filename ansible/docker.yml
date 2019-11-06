@@ -31,6 +31,11 @@
         name: docker-ce
         state: latest
 
+    - name: Install pip
+      easy_install:
+        name: pip
+        state: latest
+
     - name:  Install Docker-py
       pip:
         name: docker-py
