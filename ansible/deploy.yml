@@ -12,7 +12,7 @@
   - name: Create front-end container
     docker_container:
       name: front-end
-      image: gcr.io/project-for-terraform/front-end:latest
+      image: gcr.io/project-for-terraform/front-end
       networks: microservices-net
       recreate: yes
-      
+      state: started
