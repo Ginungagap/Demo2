@@ -6,7 +6,7 @@
   tasks:
   - name: pull an image
     docker_image:
-      name: gcr.io/project-for-terraform/front-end:latest
+      name: gcr.io/project-for-terraform/front-end
       source: pull
 
 # - name: Run app containers 
