@@ -13,6 +13,7 @@
     docker_container:
       name: front-end
       image: gcr.io/project-for-terraform/front-end
-      networks: microservices-net
+      networks:
+        - name: microservices-net
       recreate: yes
       state: started
