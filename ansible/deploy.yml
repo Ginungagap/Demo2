@@ -3,6 +3,11 @@
   gather_facts: No
   hosts: production
 
+  - name: Connect to overlay network
+    docker_network:
+      name: microservices-net
+      attachable: yes
+
   tasks:
   - name: Pull front-end image
     docker_image:
