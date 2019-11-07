@@ -5,10 +5,10 @@
 
   tasks:
 
-  - name: Connect to overlay network
-    docker_network:
-      name: microservices-net
-      attachable: yes
+#   - name: Connect to overlay network
+#     docker_network:
+#       name: microservices-net
+#       attachable: yes
 
   - name: Pull front-end image
     docker_image:
