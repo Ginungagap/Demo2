@@ -20,8 +20,8 @@
     docker_image:
       build:
         path: /var/lib/jenkins/repositories/front-end
-      name: gcr.io/project-for-terraform/front-end
-      tag: "3.0.0, latest"
+      name: gcr.io/project-for-terraform/front-end:3.0.0
+      tag: latest
       force_tag: yes
       push: yes
       source: build
