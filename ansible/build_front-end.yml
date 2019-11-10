@@ -1,0 +1,46 @@
+---
+- name: Build images
+  gather_facts: No
+  hosts: localhost
+
+  tasks:
+  - name: Docker Login
+    docker_login:
+      registry: https://gcr.io
+      username: _json_key
+      debug: true
+      password: " {{ lookup('file', '/var/lib/jenkins/credentials/project-for-terraform.json')}}"
+
+  - name: Clone front-end
+    git:
+      repo: 'https://github.com/Ginungagap/front-end.git'
+      dest: /var/lib/jenkins/repositories/front-end
+
+  - name: Build and push front-end image
+    docker_image:
+      build:
+        path: /var/lib/jenkins/repositories/front-end
+      name: gcr.io/project-for-terraform/front-end:2.5.0-{{ BUILD_NUMBER }}
+      source: build
+      push: yes
+
+  - name: Tag front-end image
+    docker_image:
+      name: gcr.io/project-for-terraform/front-end:2.5.0-{{ BUILD_NUMBER }}
+      repository:  gcr.io/project-for-terraform/front-end:latest
+      force_tag: yes
+      source: local
+      push: yes    
+
+  - name: Remove front-end image version
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/front-end
+      tag: "2.5.0-{{ BUILD_NUMBER }}"
+     
+  - name: Remove front-end image latest
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/front-end
+      tag: latest
+  
