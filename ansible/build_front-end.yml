@@ -20,13 +20,13 @@
     docker_image:
       build:
         path: /var/lib/jenkins/repositories/front-end
-      name: gcr.io/project-for-terraform/front-end:2.5.0-{{ BUILD_NUMBER }}
+      name: gcr.io/project-for-terraform/front-end:2.5.{{ BUILD_NUMBER }}
       source: build
       push: yes
 
   - name: Tag front-end image
     docker_image:
-      name: gcr.io/project-for-terraform/front-end:2.5.0-{{ BUILD_NUMBER }}
+      name: gcr.io/project-for-terraform/front-end:2.5.{{ BUILD_NUMBER }}
       repository:  gcr.io/project-for-terraform/front-end:latest
       force_tag: yes
       source: local
@@ -36,7 +36,7 @@
     docker_image:
       state: absent
       name: gcr.io/project-for-terraform/front-end
-      tag: "2.5.0-{{ BUILD_NUMBER }}"
+      tag: "2.5.{{ BUILD_NUMBER }}"
      
   - name: Remove front-end image latest
     docker_image:
