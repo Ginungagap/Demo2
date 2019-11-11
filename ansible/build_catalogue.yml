@@ -1,0 +1,46 @@
+---
+- name: Build catalogue
+  gather_facts: No
+  hosts: localhost
+
+  tasks:
+  - name: Docker Login
+    docker_login:
+      registry: https://gcr.io
+      username: _json_key
+      debug: true
+      password: " {{ lookup('file', '/var/lib/jenkins/credentials/project-for-terraform.json')}}"
+
+  - name: Clone catalogue
+    git:
+      repo: 'https://github.com/Ginungagap/catalogue.git'
+      dest: /var/lib/jenkins/repositories/catalogue
+
+  - name: Build and push catalogue image
+    docker_image:
+      build:
+        path: /var/lib/jenkins/repositories/catalogue
+      name: gcr.io/project-for-terraform/catalogue:2.5.{{ BUILD_NUMBER }}
+      source: build
+      push: yes
+
+  - name: Tag catalogue image
+    docker_image:
+      name: gcr.io/project-for-terraform/catalogue:2.5.{{ BUILD_NUMBER }}
+      repository:  gcr.io/project-for-terraform/catalogue:latest
+      force_tag: yes
+      source: local
+      push: yes    
+
+  - name: Remove catalogue image version
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/catalogue
+      tag: "2.5.{{ BUILD_NUMBER }}"
+     
+  - name: Remove catalogue image latest
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/catalogue
+      tag: latest
+  

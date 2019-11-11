@@ -1,5 +1,5 @@
 ---
-- name: Build images
+- name: Build front-end
   gather_facts: No
   hosts: localhost
 
