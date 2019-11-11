@@ -4,12 +4,6 @@
   hosts: production
 
   tasks:
-
-#   - name: Connect to overlay network
-#     docker_network:
-#       name: microservices-net
-#       attachable: yes
-
   - name: Pull front-end image
     docker_image:
       name: gcr.io/project-for-terraform/front-end
@@ -19,11 +13,10 @@
     docker_container:
       name: front-end
       image: gcr.io/project-for-terraform/front-end
-      # networks_cli_compatible: no
-      # network_mode: overlay
       networks:
         - name: microservices-net
       ports:
         - "80:8079"       
       recreate: yes
       state: started
+      restart_policy: always
