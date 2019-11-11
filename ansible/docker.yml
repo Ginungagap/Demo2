@@ -60,9 +60,9 @@
 
   tasks:
     - name: Initialize Docker swarm
-       shell: >
-       docker swarm init
-       --advertise-addr={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:2377
+      shell: >
+        docker swarm init
+        --advertise-addr={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:2377
       run_once: true
 
     - name: Get the worker join-token
