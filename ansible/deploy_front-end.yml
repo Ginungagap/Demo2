@@ -21,8 +21,8 @@
       image: gcr.io/project-for-terraform/front-end
       # networks_cli_compatible: no
       # network_mode: overlay
-      # networks:
-      #   - name: microservices-net
+      networks:
+        - name: microservices-net
       ports:
         - "80:8079"       
       recreate: yes
