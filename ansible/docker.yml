@@ -65,9 +65,9 @@
         --advertise-addr={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:2377
       run_once: true
 
-    - name: Get the worker join-token
-      shell: docker swarm join-token --quiet worker 
-      register: worker_token  
+    - name: Get the manager join-token
+      shell: docker swarm join-token --quiet manager 
+      register: manager_token  
 
     - name: Create overlay network 
       shell: sudo docker network create --driver=overlay --attachable microservices-net
@@ -78,6 +78,6 @@
   become: yes      
 
   tasks:
-    - name: Add worker to the Swarm
-      shell: "docker swarm join --token {{ hostvars['production']['worker_token']['stdout'] }} {{ hostvars['production']['ansible_default_ipv4']['address'] }}:2377"
+    - name: Add manager to the Swarm
+      shell: "docker swarm join --token {{ hostvars['production']['manager_token']['stdout'] }} {{ hostvars['production']['ansible_default_ipv4']['address'] }}:2377"
      
