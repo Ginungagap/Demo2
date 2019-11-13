@@ -20,13 +20,13 @@
 
   tasks:
     - name: Create catalogue-db container
-    docker_container:
-      name: catalogue-db
-      image: gcr.io/project-for-terraform/catalogue-db
-      networks:
-        - name: microservices-net
-      ports:
-        - "3306:3306"  
-      recreate: yes
-      state: started  
-      restart_policy: always     
+      docker_container:
+        name: catalogue-db
+        image: gcr.io/project-for-terraform/catalogue-db
+        networks:
+          - name: microservices-net
+        ports:
+          - "3306:3306"  
+        recreate: yes
+        state: started  
+        restart_policy: always     
