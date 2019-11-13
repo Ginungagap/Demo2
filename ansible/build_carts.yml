@@ -1,0 +1,47 @@
+---
+- name: Build carts
+  gather_facts: No
+  hosts: localhost
+
+  tasks:
+  - name: Docker Login
+    docker_login:
+      registry: https://gcr.io
+      username: _json_key
+      debug: true
+      password: " {{ lookup('file', '/var/lib/jenkins/credentials/project-for-terraform.json')}}"
+
+  # - name: Clone carts
+  #   git:
+  #     repo: 'https://github.com/Ginungagap/carts.git'
+  #     dest: /var/lib/jenkins/repositories/carts
+
+  - name: Build and push carts image
+    docker_image:
+      build:
+        dockerfile: /var/lib/jenkins//workspace/CartsPipeline/docker/carts/Dockerfile
+        path: "/var/lib/jenkins/workspace/CartsPipeline/target"
+      name: gcr.io/project-for-terraform/carts:2.5.{{ BUILD_NUMBER }}
+      source: build
+      push: yes
+
+  - name: Tag carts image
+    docker_image:
+      name: gcr.io/project-for-terraform/carts:2.5.{{ BUILD_NUMBER }}
+      repository: gcr.io/project-for-terraform/carts:latest
+      force_tag: yes
+      source: local
+      push: yes    
+
+  - name: Remove carts image version
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/carts
+      tag: "2.5.{{ BUILD_NUMBER }}"
+     
+  - name: Remove carts image latest
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/carts
+      tag: latest
+  
