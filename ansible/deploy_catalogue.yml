@@ -5,14 +5,14 @@
 
   tasks:
     - name: Create catalogue container
-    docker_container:
-      name: catalogue
-      image: gcr.io/project-for-terraform/catalogue
-      networks:
-        - name: microservices-net
-      recreate: yes
-      state: started  
-      restart_policy: always     
+      docker_container:
+        name: catalogue
+        image: gcr.io/project-for-terraform/catalogue
+        networks:
+          - name: microservices-net
+        recreate: yes
+        state: started  
+        restart_policy: always     
 
 - name: Pull and run catalogue-db containers 
   gather_facts: No
