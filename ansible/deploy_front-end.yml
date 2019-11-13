@@ -1,5 +1,5 @@
 ---
-- name: Pull and run app containers 
+- name: Pull and run front-end container
   gather_facts: No
   hosts: production
 
