@@ -19,7 +19,7 @@
   - name: Build and push user image
     docker_image:
       build:
-        dockerfile: /var/lib/jenkins/repositories/user/docker/user/Dockerfile
+        dockerfile: /var/lib/jenkins/repositories/user/docker/user/Dockerfile-release
         path: /var/lib/jenkins/repositories/user
       name: gcr.io/project-for-terraform/user:2.5.{{ BUILD_NUMBER }}
       source: build
