@@ -1,0 +1,76 @@
+---
+- name: Build user
+  gather_facts: No
+  hosts: localhost
+
+  tasks:
+  - name: Docker Login
+    docker_login:
+      registry: https://gcr.io
+      username: _json_key
+      debug: true
+      password: " {{ lookup('file', '/var/lib/jenkins/credentials/project-for-terraform.json')}}"
+
+  - name: Clone user
+    git:
+      repo: 'https://github.com/Ginungagap/user.git'
+      dest: /var/lib/jenkins/repositories/user
+
+  - name: Build and push user image
+    docker_image:
+      build:
+        dockerfile: /var/lib/jenkins/repositories/user/docker/user/Dockerfile
+        path: /var/lib/jenkins/repositories/user
+      name: gcr.io/project-for-terraform/user:2.5.{{ BUILD_NUMBER }}
+      source: build
+      push: yes
+
+  - name: Tag user image
+    docker_image:
+      name: gcr.io/project-for-terraform/user:2.5.{{ BUILD_NUMBER }}
+      repository: gcr.io/project-for-terraform/user:latest
+      force_tag: yes
+      source: local
+      push: yes    
+
+  - name: Remove user image version
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/user
+      tag: "2.5.{{ BUILD_NUMBER }}"
+     
+  - name: Remove user image latest
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/user
+      tag: latest
+  
+  - name: Build and push user-db image
+    docker_image:
+      name: gcr.io/project-for-terraform/user-db:2.5.{{ BUILD_NUMBER }}
+      build:
+        path: /var/lib/jenkins/repositories/user/docker/user-db
+      source: build
+      push: yes
+    tags: database  
+
+  - name: TAG user-db
+    docker_image:
+      name: gcr.io/project-for-terraform/user-db:2.5.{{ BUILD_NUMBER }}
+      repository: gcr.io/project-for-terraform/user-db:latest
+      force_tag: yes
+      source: local
+      push: yes
+
+  - name: Remove image latest user-db
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/user-db
+      tag: latest
+  
+  - name: Remove image version user-db
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/user-db
+      tag: "2.5.{{ BUILD_NUMBER }}"
+      
