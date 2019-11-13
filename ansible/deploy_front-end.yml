@@ -4,10 +4,10 @@
   hosts: production
 
   tasks:
-  - name: Pull front-end image
-    docker_image:
-      name: gcr.io/project-for-terraform/front-end
-      source: pull
+  # - name: Pull front-end image
+  #   docker_image:
+  #     name: gcr.io/project-for-terraform/front-end
+  #     source: pull
 
   - name: Create front-end container
     docker_container:

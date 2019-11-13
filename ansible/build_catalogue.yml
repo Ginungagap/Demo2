@@ -19,6 +19,7 @@
   - name: Build and push catalogue image
     docker_image:
       build:
+        dockerfile: /var/lib/jenkins/repositories/catalogue/docker/catalogue/Dockerfile
         path: /var/lib/jenkins/repositories/catalogue
       name: gcr.io/project-for-terraform/catalogue:2.5.{{ BUILD_NUMBER }}
       source: build
@@ -27,7 +28,7 @@
   - name: Tag catalogue image
     docker_image:
       name: gcr.io/project-for-terraform/catalogue:2.5.{{ BUILD_NUMBER }}
-      repository:  gcr.io/project-for-terraform/catalogue:latest
+      repository: gcr.io/project-for-terraform/catalogue:latest
       force_tag: yes
       source: local
       push: yes    
@@ -44,3 +45,31 @@
       name: gcr.io/project-for-terraform/catalogue
       tag: latest
   
+  - name: Build and push catalogue-db image
+    docker_image:
+      name: gcr.io/project-for-terraform/catalogue-db:2.5.{{ BUILD_NUMBER }}
+      build:
+        path: /var/lib/jenkins/repositories/catalogue/docker/catalogue-db
+      source: build
+      push: yes
+    tags: database  
+
+  - name: TAG catalogue-db
+    docker_image:
+      name: gcr.io/project-for-terraform/catalogue-db:2.5.{{ BUILD_NUMBER }}
+      repository: gcr.io/project-for-terraform/catalogue-db:latest
+      force_tag: yes
+      source: local
+      push: yes
+
+  - name: Remove image latest catalogue-db
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/catalogue-db
+      tag: latest
+  
+  - name: Remove image version catalogue-db
+    docker_image:
+      state: absent
+      name: gcr.io/project-for-terraform/catalogue-db
+      tag: "2.5.{{ BUILD_NUMBER }}"
