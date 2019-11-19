@@ -42,7 +42,7 @@
       docker_container:
         name: filebeat
         image: docker.io/elastic/filebeat:6.8.4
-         networks:
+        networks:
           - name: microservices-net
         command: ["sh","-c","filebeat -e -strict.perms=false"]
         volumes:
