@@ -1,10 +1,17 @@
 ---
-- name: Install ELK
+- name: Install ELK to mongo-db host
   gather_facts: yes
   hosts: mongo-db
   become: yes 
 
   tasks:
+
+    - name: Change system parameters for kibana
+      sysctl:
+        name: vm.max_map_count
+        value: '262144'
+        state: present  
+
     - name: Create kibana container
       docker_container:
         name: kibana
@@ -32,7 +39,14 @@
         state: started
         restart_policy: always         
 
-    - name: Copy filebeat conf to mongo-db host
+- name: Install filebeat
+  gather_facts: yes
+  hosts: docker
+  become: yes 
+
+  tasks:
+
+    - name: Copy filebeat config 
       copy:
         src: ./filebeat.yml
         dest: /tmp
