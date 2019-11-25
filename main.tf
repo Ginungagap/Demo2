@@ -63,3 +63,15 @@ resource "google_compute_firewall" "prod-8081-8083" {
     ports    = ["8081-8083"]
   }
 }
+
+resource "google_compute_firewall" "elk" {
+  name    = "elk"
+  network = var.network
+
+  target_tags = ["elk"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["5601"]
+  }
+}
