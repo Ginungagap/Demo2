@@ -32,7 +32,7 @@ resource "google_compute_instance" "mongo-db" {
  name         = "mongo-db"
  machine_type = var.machine_type
  zone         = var.zone
- tags         = ["http-server"]
+ tags         = ["http-server", "elk"]
 
   boot_disk {
     initialize_params {
