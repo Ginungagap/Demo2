@@ -27,7 +27,7 @@ processors:
     #host: "unix:///var/run/docker.sock"
 
 output.elasticsearch:
-  hosts: '${ELASTICSEARCH_HOSTS:mong0-db:9200}'
+  hosts: '${ELASTICSEARCH_HOSTS:mongo-db:9200}'
   username: 'elastic'
   password: 'changeme'
 
