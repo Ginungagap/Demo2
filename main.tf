@@ -30,7 +30,7 @@ resource "google_compute_instance" "production" {
 
 resource "google_compute_instance" "mongo-db" {
  name         = "mongo-db"
- machine_type = var.machine_type
+ machine_type = var.machine_type_2
  zone         = var.zone
  tags         = ["http-server", "elk"]
 

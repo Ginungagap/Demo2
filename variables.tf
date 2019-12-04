@@ -23,6 +23,11 @@ variable "machine_type" {
   default     = "n1-standard-1"
 }
 
+variable "machine_type_2" {
+  description = "Machine type to create"
+  default     = "n1-standard-2"
+}
+
 variable "disk_image" {
   description = "Centos-7"
   default     = "centos-7-v20190905"

@@ -5,7 +5,6 @@
   become: yes 
 
   tasks:
-
     - name: Change system parameters for kibana
       sysctl:
         name: vm.max_map_count
@@ -18,10 +17,11 @@
         image: kibana:6.8.4
         networks:
           - name: microservices-net
-        ports:
-          - "5601:5601"
+        # ports:
+        #   - "5601:5601"
         recreate: yes
         state: started
+        log_driver: journald  
         restart_policy: always 
 
     - name: Create ElasticSearch container
@@ -37,15 +37,46 @@
           ES_JAVA_OPTS: "-Xms750m -Xmx750m"
         recreate: yes
         state: started
-        restart_policy: always         
+        log_driver: journald  
+        restart_policy: always
+        
+    - name: Copy nginx.conf to mongo-db
+    copy:
+      src: ./nginx.conf
+      dest: /tmp
+      force: yes
+    become: yes
+  
+    - name: Copy htpsswd to mongo-db
+      copy:
+        src: /var/lib/jenkins/htpasswd.users
+        dest: /tmp
+        force: yes
+      become: yes
+    
+    - name: Create nginx container
+    docker_container:
+      name: nginx
+      image: nginx
+      networks:
+        - name: microservices-net
+      volumes:
+        - /tmp/htpasswd.users:/etc/nginx/htpasswd.users
+        - /tmp/nginx.conf:/etc/nginx/nginx.conf
+      ports: 
+        - "80:80"  
+      recreate: yes
+      state: started
+      log_driver: journald
+      restart_policy: always  
 
-- name: Install filebeat
+
+- name: Install filebeat to both hosts
   gather_facts: yes
   hosts: docker
   become: yes 
 
   tasks:
-
     - name: Copy filebeat config 
       copy:
         src: ./filebeat.yml
@@ -63,9 +94,11 @@
           - /tmp/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
           - /var/lib/docker/containers:/var/lib/docker/containers:ro
           - /var/run/docker.sock:/var/run/docker.sock:ro
+          - /var/log/messages:/var/log/messages
         env: 
           output.elasticsearch.hosts: "elasticsearch:9200"
         user: root
         recreate: yes
         state: started
+        log_driver: journald
         restart_policy: always       
